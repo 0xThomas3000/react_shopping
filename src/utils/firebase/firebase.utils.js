@@ -33,8 +33,11 @@ provider.setCustomParameters({
   prompt: "select_account", // Always select an acc every time sb interacts with our provider
 });
 
+// The auth: singleton because it keeps track of the authentication state of the entire app
+// as the users sign-in
 export const auth = getAuth(); // The auth instance that we've generated
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
 
