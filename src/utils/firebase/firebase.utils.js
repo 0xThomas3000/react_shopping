@@ -6,6 +6,13 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 
+import {
+  getFirestore,
+  doc, // This method allows us to get a document instance inside of Firestore DB.
+  getDoc, // To get that Data on that document
+  setDoc, // To set the documents data
+} from "firebase/firestore";
+
 // Is used to identify this SDK (Developer Kit that we're using)
 const firebaseConfig = {
   apiKey: "AIzaSyBvCOYFzpfccqJdYQAuerlT3AhqYfxOEYg",
@@ -28,3 +35,15 @@ provider.setCustomParameters({
 
 export const auth = getAuth(); // The auth instance that we've generated
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+export const db = getFirestore();
+
+export const createUserDocumentFromAuth = async (userAuth) => {
+  // Give me a doc ref inside of 'db' under 'users' collection with this "user auth" that has a particular id
+  const userDocRef = doc(db, "users", userAuth.uid);
+  console.log(userDocRef);
+
+  const userSnapShot = await getDoc(userDocRef);
+  console.log(userSnapShot);
+  console.log(userSnapShot.exists());
+};
