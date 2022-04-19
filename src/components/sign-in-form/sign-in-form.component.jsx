@@ -26,19 +26,31 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const {user} = await signInWithGooglePopup();
+    const { user } = await signInWithGooglePopup();
     await createUserDocumentFromAuth(user);
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Essentially, we don't want any default behaviour of the form
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(email, password);
+      const response = await signInAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
       console.log(response);
       resetFormFields();
     } catch (error) {
-      
+      switch (error.code) {
+        case "auth/wrong-password":
+          alert("Incorrect password for email");
+          break;
+        case "auth/user-not-found":
+          alert("No user associated with this email");
+          break;
+        default:
+          console.log(error);
+      }
     }
   };
 
@@ -69,8 +81,10 @@ const SignInForm = () => {
           value={password}
         />
         <div className="buttons-container">
-        <Button /* buttonType="google"*/ type="submit">Sign In</Button>
-        <Button buttonType="google" onClick={signInWithGoogle}>Google Sign In</Button>
+          <Button /* buttonType="google"*/ type="submit">Sign In</Button>
+          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+            Google Sign In
+          </Button>
         </div>
       </form>
     </div>
