@@ -5,12 +5,21 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { UserProvider } from "./contexts/user.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      {/* So now any component inside of this UserProvider nested deeper in the app 
+          can access the context value inside of the provider itself. 
+          => 
+          => EX: our sign-in form is able to access this context because 
+                  whenever the user signs in, we want to actually take this 
+                  user object and we want to store it inside of the context. */}
+      <UserProvider>
+        <App />
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
