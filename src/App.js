@@ -10,7 +10,6 @@ const Shop = () => {
 const App = () => {
   return (
     <Routes>
-      {" "}
       {/* Everything inside of this Component can be "routable" */}
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />

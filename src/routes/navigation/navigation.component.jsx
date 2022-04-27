@@ -5,8 +5,8 @@ import { UserContext } from "../../contexts/user.context";
 import "./navigation.styles.scss";
 
 const Navigation = () => {
-  const { currentUser } = useContext(UserContext); // Leveraging this currentUser
-  console.log(currentUser);
+  const { currentUser } = useContext(UserContext); // Leveraging this currentUser that we get from useContext
+  // console.log(currentUser);
 
   return (
     <Fragment>
