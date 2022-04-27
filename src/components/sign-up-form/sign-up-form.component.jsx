@@ -21,9 +21,13 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-  const val = useContext(UserContext); // Initializing the value, not yet used it
+  const { setCurrentUser } = useContext(UserContext);
 
-  console.log("hit"); // Can't be printed out if we haven't yet hooked SignUpForm into UserContext above
+  // Initializing the value, not yet used it
+  // const val = useContext(UserContext);
+
+  // Can't be printed out if we haven't yet hooked SignUpForm into UserContext above
+  // console.log("hit");
 
   // console.log(formFields);
 
@@ -43,6 +47,9 @@ const SignUpForm = () => {
         email,
         password
       );
+
+      setCurrentUser(user);
+
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
