@@ -49,7 +49,7 @@ const SignUpForm = () => {
       );
 
       setCurrentUser(user);
-
+      console.log(user);
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
@@ -63,6 +63,8 @@ const SignUpForm = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    // EX: if [name]=password, then point to the value that users typed in.
     setFormFields({ ...formFields, [name]: value });
   };
 

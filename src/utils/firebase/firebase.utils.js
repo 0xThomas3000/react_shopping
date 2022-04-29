@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import {
@@ -94,3 +95,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 
 // async because it'll return a Promise of whatever signOut() returns back to us.
 export const signOutUser = async () => signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);

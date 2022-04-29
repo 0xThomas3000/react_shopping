@@ -31,7 +31,7 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
+    const { user } = await signInWithGooglePopup(); // Return a "userAuth"
     await createUserDocumentFromAuth(user);
   };
 
@@ -67,6 +67,8 @@ const SignInForm = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    // EX: if [name]=password, then point to the value that users typed in.
     setFormFields({ ...formFields, [name]: value });
   };
 
