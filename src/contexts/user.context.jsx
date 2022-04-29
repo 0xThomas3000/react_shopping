@@ -1,8 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import {
-  onAuthStateChangedListener,
-  signOutUser,
-} from "../utils/firebase/firebase.utils";
+import { onAuthStateChangedListener } from "../utils/firebase/firebase.utils";
 // as the actual value we wanna access
 export const UserContext = createContext({
   // The context needs an initial value => just want to build the base empty state of what this is.
@@ -21,8 +18,6 @@ export const UserProvider = ({ children }) => {
   //    that is nested within this actual <Provider> value.
   const [currentUser, setCurrentUser] = useState(null); // Store a user state using useState Hook
   const value = { currentUser, setCurrentUser }; // Storing a user object which is the "actual contextual value"
-
-  signOutUser();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
