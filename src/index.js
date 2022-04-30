@@ -6,6 +6,7 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./contexts/user.context";
+import { ProductsProvider } from "./contexts/products.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,7 +19,12 @@ root.render(
                   whenever the user signs in, we want to actually take this 
                   user object and we want to store it inside of the context. */}
       <UserProvider>
-        <App />
+        {/* Because "Products" should be able to access the "User" 
+            => Wrap "User" around, => "Products" can reach up into the "UserProvider"
+            => "UserProvider" can't necessarily go into its children and are to fetch the data. */}
+        <ProductsProvider>
+          <App />
+        </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
