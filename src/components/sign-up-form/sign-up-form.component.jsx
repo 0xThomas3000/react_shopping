@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
 import {
   createAuthUserWithEmailAndPassword,
@@ -7,8 +7,6 @@ import {
 import Button from "../button/button.component";
 
 import "./sign-up-form.styles.scss";
-
-import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
   displayName: "",
@@ -20,16 +18,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
-
-  const { setCurrentUser } = useContext(UserContext);
-
-  // Initializing the value, not yet used it
-  // const val = useContext(UserContext);
-
-  // Can't be printed out if we haven't yet hooked SignUpForm into UserContext above
-  // console.log("hit");
-
-  // console.log(formFields);
 
   // Clear out the form after submitting
   const resetFormFields = () => {
@@ -47,9 +35,6 @@ const SignUpForm = () => {
         email,
         password
       );
-
-      setCurrentUser(user);
-      console.log(user);
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {

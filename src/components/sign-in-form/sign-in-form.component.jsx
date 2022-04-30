@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
-import { UserContext } from "../../contexts/user.context";
 
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 
@@ -20,20 +18,14 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  // As we know, we'll get back a "user" obj and we just want to set the value for our sign in form.
-  const { setCurrentUser } = useContext(UserContext);
-
-  // console.log(formFields);
-
   // Clear out the form after submitting
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup(); // Return a "userAuth"
-    // setCurrentUser(user);
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup(); // Return a "userAuth"
+    // await createUserDocumentFromAuth(user);
   };
 
   const handleSubmit = async (event) => {
@@ -44,14 +36,9 @@ const SignInForm = () => {
       // whenever the user signs in, we want to actually take this {user} object and we want to store it inside
       // of the context.
       // const response = await signInAuthUserWithEmailAndPassword(
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      
-      // setCurrentUser(user); // Run this value whenever the "user" comes back
-
       // console.log(response);
+
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
       switch (error.code) {

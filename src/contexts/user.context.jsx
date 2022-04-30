@@ -1,5 +1,8 @@
 import { createContext, useState, useEffect } from "react";
-import { onAuthStateChangedListener } from "../utils/firebase/firebase.utils";
+import {
+  onAuthStateChangedListener,
+  createUserDocumentFromAuth,
+} from "../utils/firebase/firebase.utils";
 // as the actual value we wanna access
 export const UserContext = createContext({
   // The context needs an initial value => just want to build the base empty state of what this is.
@@ -21,7 +24,12 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
-      console.log(user);
+      /* We centralize our "Sign-out and Sign-in" into this listener callback. */
+      if (user) {
+        // Create a "user document" if user came "true". Otherwise, just set the "currentUser"
+        createUserDocumentFromAuth(user);
+      }
+      setCurrentUser(user); // Store "null" if user signed out, store "user" if user signed in
     });
 
     return unsubscribe;
