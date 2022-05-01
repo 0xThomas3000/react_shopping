@@ -40,12 +40,17 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
   );
 };
 
+/* A helper to help clear cart items */
+const clearCartItem = (cartItems, cartItemToClear) =>
+  cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
+
 export const CartContext = createContext({
   isCartOpen: false,
   setIsOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
   removeItemFromCart: () => {},
+  clearItemFromCart: () => {},
   cartItemCount: 0,
 });
 
@@ -68,12 +73,17 @@ export const CartProvider = ({ children }) => {
   const removeItemFromCart = (cartItemToRemove) =>
     setCartItems(removeCartItem(cartItems, cartItemToRemove));
 
+  const clearItemFromCart = (cartItemToClear) => {
+    setCartItems(clearCartItem(cartItems, cartItemToClear));
+  };
+
   const value = {
     isCartOpen,
     setIsCartOpen,
-    cartItems,
     addItemToCart,
     removeItemFromCart,
+    clearItemFromCart,
+    cartItems,
     cartItemCount,
   };
 
