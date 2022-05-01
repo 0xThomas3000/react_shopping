@@ -11,7 +11,10 @@ const App = () => {
       {/* Everything inside of this Component can be "routable" */}
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
+        {/* we need to say: "when you start matching this path, I know there will be 
+            a subsequent the URL parameter set after shop. Whatever that set is, I don't care.
+            => That's what this star/wild card represents meaning "anything" ("shop/*") */}
+        <Route path="shop/*" element={<Shop />} />
         <Route path="auth" element={<Authentication />} />
         <Route path="checkout" element={<Checkout />} />
       </Route>
