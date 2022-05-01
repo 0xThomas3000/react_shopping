@@ -15,6 +15,8 @@ import {
   doc, // This method allows us to get a document instance inside of Firestore DB.
   getDoc, // To get that Data on that document
   setDoc, // To set the documents data
+  collection,
+  writeBatch, // Ensure all of objects are added to the Collection successfully (in 1 successful transaction)
 } from "firebase/firestore";
 
 // Is used to identify this SDK (Developer Kit that we're using)
@@ -45,6 +47,26 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
+
+// Add a Collection and then the actual documents inside of that Collection
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd,
+  field = "title"
+) => {
+  const collectionRef = collection(db, collectionKey);
+  /*  Now we have a collectionRef, what are we gonna do next? => Batch write these objects to there
+      How to store each of these "objectsToAdd" inside of "collectionRef" as a new Document?
+      ===> Read more in Udemy note (126. addCollectionAndDocuments Pt.1) */
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object[field].toLowerCase()); // Or "object.title.toLowerCase()"
+    batch.set(docRef, object); // Set location with object value (can pass JSON obj and it'll build out the structure)
+  });
+  await batch.commit();
+  console.log("done");
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
@@ -96,4 +118,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 // async because it'll return a Promise of whatever signOut() returns back to us.
 export const signOutUser = async () => signOut(auth);
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
