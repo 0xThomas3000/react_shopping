@@ -52,12 +52,14 @@ export const CartContext = createContext({
   removeItemFromCart: () => {},
   clearItemFromCart: () => {},
   cartItemCount: 0,
+  cartTotal: 0,
 });
 
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
     const newCartItemCount = cartItems.reduce(
@@ -66,6 +68,16 @@ export const CartProvider = ({ children }) => {
     );
     setCartItemCount(newCartItemCount);
   }, [cartItems]); // Everytime "cartItems array" changes, re-calculate the "cartItemCount"
+
+  // useEffect's best practice: to make sure it just governs one singular responsibility.
+  // => don't combine code of 1 useEffect() into another useEffect()
+  useEffect(() => {
+    const newCartTotal = cartItems.reduce(
+      (total, cartItem) => total + cartItem.quantity * cartItem.price,
+      0
+    );
+    setCartTotal(newCartTotal);
+  }, [cartItems]); // Everytime "cartItems array" changes, re-calculate the "cartTotal"
 
   const addItemToCart = (product) =>
     setCartItems(addCartItem(cartItems, product));
@@ -85,6 +97,7 @@ export const CartProvider = ({ children }) => {
     clearItemFromCart,
     cartItems,
     cartItemCount,
+    cartTotal,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
