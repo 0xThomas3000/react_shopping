@@ -17,6 +17,8 @@ import {
   setDoc, // To set the documents data
   collection,
   writeBatch, // Ensure all of objects are added to the Collection successfully (in 1 successful transaction)
+  query,
+  getDocs,
 } from "firebase/firestore";
 
 // Is used to identify this SDK (Developer Kit that we're using)
@@ -66,6 +68,22 @@ export const addCollectionAndDocuments = async (
   });
   await batch.commit();
   console.log("done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef); // Generate a Query of a CollectionRef
+
+  const querySnapshot = await getDocs(q); // async ability to fetch the document Snapshots
+
+  // Reducing over array in order to end up with an object.
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc; // Return the accumulator
+  }, {});
+
+  return categoryMap;
 };
 
 export const createUserDocumentFromAuth = async (

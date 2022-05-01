@@ -1,8 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
-import { addCollectionAndDocuments } from "../utils/firebase/firebase.utils";
-
-import SHOP_DATA from "../shop-data.js";
+import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
 
 export const ProductsContext = createContext({
   products: [],
@@ -12,8 +10,13 @@ export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    addCollectionAndDocuments("categories", SHOP_DATA);
-  }, []);
+    const getCategoriesMap = async () => {
+      const categoryMap = await getCategoriesAndDocuments();
+      console.log(categoryMap);
+    };
+
+    getCategoriesMap();
+  }, []); // [] means want to run this when this Provider gets mounted.
 
   const value = { products };
 
